@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/navigation_home"
+        android:title="@string/home"
+        android:icon="@drawable/baseline_home_24"/>
+    <item android:id="@+id/navigation_daily"
+        android:title="@string/daily"
+        android:icon="@drawable/baseline_format_list_bulleted_24"/>
+
+    <item android:id="@+id/navigation_analysis"
+        android:title="@string/analysis"
+        android:icon="@drawable/anlysis_svg"/>
+    <item android:id="@+id/navigation_setting"
+        android:title="@string/setting"
+        android:icon="@drawable/baseline_settings_24"/>
+
+</menu>
