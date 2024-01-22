@@ -1,5 +1,7 @@
 package com.example.time_management_app;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,27 +9,37 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.androidnetworking.AndroidNetworking;
+import com.example.time_management_app.API.FastAndroidNetworking;
+import com.example.time_management_app.API.onDataFetch;
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
 import com.example.time_management_app.Fragments.HomeFragment;
 import com.example.time_management_app.Fragments.SettingFragment;
-import com.example.time_management_app.random.VollyLibrary;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements onDataFetch {
     BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AndroidNetworking.initialize(getApplicationContext());
         // this is for testing purpose
 //        VollyLibrary vl = new VollyLibrary();
 //        vl.getData(this);
+        FastAndroidNetworking fastAndroidNetworking = new FastAndroidNetworking();
+
+        fastAndroidNetworking.getFetchData(getApplicationContext(),this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu);
 
     setBottomNavigationView();
@@ -69,5 +81,17 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
+    }
+
+
+
+    @Override
+    public void onReciveData(JSONArray jsonObject) {
+        Log.e(TAG, "onReciveData: "+jsonObject.toString());
+    }
+
+    @Override
+    public void onError(String message) {
+        Log.e(TAG, "onError: Error in onReciveDatac : "+message );
     }
 }
