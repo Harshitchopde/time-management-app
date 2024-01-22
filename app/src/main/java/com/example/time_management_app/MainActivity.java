@@ -39,7 +39,11 @@ public class MainActivity extends AppCompatActivity implements onDataFetch {
 //        vl.getData(this);
         FastAndroidNetworking fastAndroidNetworking = new FastAndroidNetworking();
 
-        fastAndroidNetworking.getFetchData(getApplicationContext(),this);
+//        fastAndroidNetworking.getFetchData(getApplicationContext(),this);
+         fastAndroidNetworking.getFetchData(this); // working fine
+         fastAndroidNetworking.postFetchData(this); // working fine
+         fastAndroidNetworking.putFetchData(this); //
+         fastAndroidNetworking.deleteFetchData(this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu);
 
     setBottomNavigationView();
@@ -85,8 +89,14 @@ public class MainActivity extends AppCompatActivity implements onDataFetch {
 
 
 
+
     @Override
-    public void onReciveData(JSONArray jsonObject) {
+    public void onReciveArrayData(JSONArray jsonObject) {
+        Log.e(TAG, "onReciveData: "+jsonObject.toString());
+    }
+
+    @Override
+    public void onReciveObjectData(JSONObject jsonObject) {
         Log.e(TAG, "onReciveData: "+jsonObject.toString());
     }
 

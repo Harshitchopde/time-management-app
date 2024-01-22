@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface onDataFetch {
-   void onReciveData(JSONArray jsonObject);
+   void onReciveArrayData(JSONArray jsonObject);
+   void onReciveObjectData(JSONObject jsonObject);
    void onError(String message);
 }

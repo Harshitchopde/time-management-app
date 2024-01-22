@@ -15,9 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class FastAndroidNetworking {
-    public void getFetchData(Context context, onDataFetch onDataFetch){
+    String Base_URL = "http://192.168.43.33:8800/api/video/trend";
+    public void getFetchData(onDataFetch onDataFetch){
 
-        AndroidNetworking.get("http://172.27.109.39:8800/api/video/trend")
+        AndroidNetworking.get(Base_URL)
 
                 .setPriority(Priority.HIGH)
                 .build()
@@ -25,8 +26,8 @@ public class FastAndroidNetworking {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.e(TAG, "onResponse: phele ye chala" );
-                        onDataFetch.onReciveData(response);
+                        Log.e(TAG, "onResponse: ye GET ka hai" );
+                        onDataFetch.onReciveArrayData(response);
                     }
                     @Override
                     public void onError(ANError error) {
@@ -37,4 +38,78 @@ public class FastAndroidNetworking {
 
 
     }
+
+    public void postFetchData( onDataFetch onDataFetch){
+
+        AndroidNetworking.post(Base_URL)
+
+                .setPriority(Priority.HIGH)
+                .build()
+
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e(TAG, "onResponse: ye POST ka Hai" );
+                        onDataFetch.onReciveArrayData(response);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        onDataFetch.onError(error.getMessage());
+                    }
+                });
+
+
+    }
+    public void putFetchData( onDataFetch onDataFetch){
+
+        AndroidNetworking.put(Base_URL)
+
+                .setPriority(Priority.HIGH)
+                .build()
+
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e(TAG, "onResponse: ye PUT ka hai" );
+                        onDataFetch.onReciveArrayData(response);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        onDataFetch.onError(error.getMessage());
+                    }
+                });
+
+
+    }
+
+    public void deleteFetchData(onDataFetch onDataFetch){
+
+        AndroidNetworking.delete(Base_URL)
+
+                .setPriority(Priority.HIGH)
+                .build()
+
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e(TAG, "onResponse: ye DELETE ka hai" );
+                        onDataFetch.onReciveArrayData(response);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        Log.e(TAG, "onError: "+error );
+                        onDataFetch.onError(error.getMessage());
+                    }
+                });
+
+
+    }
+
+
+
+
+
 }
