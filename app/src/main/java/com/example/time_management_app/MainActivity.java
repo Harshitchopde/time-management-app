@@ -8,11 +8,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
 import com.example.time_management_app.Fragments.HomeFragment;
 import com.example.time_management_app.Fragments.SettingFragment;
+import com.example.time_management_app.Utils.FragLoad;
 import com.example.time_management_app.random.VollyLibrary;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,11 +22,14 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-
+    FrameLayout frameLayout;
+    FragmentManager fragmentManager =getSupportFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        frameLayout = findViewById(R.id.frame_laout);
+        FragLoad.loadFrag(new HomeFragment(),frameLayout,fragmentManager,1);
         // this is for testing purpose
 //        VollyLibrary vl = new VollyLibrary();
 //        vl.getData(this);
@@ -40,16 +45,16 @@ public class MainActivity extends AppCompatActivity {
                 int id =item.getItemId();
                 if(id== R.id.navigation_home){
                     // 1 navigation home
-                    loadFrag(new HomeFragment(),0);
+                   FragLoad.loadFrag(new HomeFragment(),frameLayout,fragmentManager,0);
                 }else if(id==R.id.navigation_daily){
                     // 2 navigation daily
-                    loadFrag(new DailyFragment(),0);
+                    FragLoad.loadFrag(new DailyFragment(),frameLayout,fragmentManager,0);
                 }else if(id==R.id.navigation_analysis) {
                     // 3 navigation analysis
-                    loadFrag(new AnalysisFragment(),0);
+                    FragLoad.loadFrag(new AnalysisFragment(),frameLayout,fragmentManager,0);
                 }else {
                     // 4 navigation setting
-                    loadFrag(new SettingFragment(),0);
+                    FragLoad.loadFrag(new SettingFragment(),frameLayout,fragmentManager,0);
 
                 }
             return true;
@@ -57,17 +62,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadFrag(Fragment fragment, int flag) {
-        FragmentManager fragmentManager =getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(flag==1){
-            fragmentTransaction.add(R.id.frame_laout,fragment);
-        }
-        else{
-            fragmentTransaction.replace(R.id.frame_laout,fragment);
-            //  clean the back stack of the fragment
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
-    }
+
 }
