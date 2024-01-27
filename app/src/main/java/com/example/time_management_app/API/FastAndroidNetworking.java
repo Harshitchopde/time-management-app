@@ -12,6 +12,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FastAndroidNetworking {
@@ -62,24 +63,44 @@ public class FastAndroidNetworking {
 
     }
     public void putFetchData( onDataFetch onDataFetch){
-
-        AndroidNetworking.put(Base_URL)
-
+        String url = "http://172.27.109.39:4000/api/auth/update";
+        Log.e(TAG, "putFetchData: put fatch" );
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("firstName", "firstname");
+            jsonObject.put("email", "gsdfgdf@gmail.com");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG, "putFetchData: chal rha hai" );
+        AndroidNetworking.put(url)
+                .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()
-
-                .getAsJSONArray(new JSONArrayRequestListener() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         Log.e(TAG, "onResponse: ye PUT ka hai" );
-                        onDataFetch.onReciveArrayData(response);
+                        Log.e(TAG, "onResponse: "+response.toString() );
                     }
+
                     @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        onDataFetch.onError(error.getMessage());
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError:PUT  "+anError.toString() );
                     }
                 });
+//                .getAsJSONArray(new JSONArrayRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        Log.e(TAG, "onResponse: ye PUT ka hai" );
+//                        onDataFetch.onReciveArrayData(response);
+//                    }
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        onDataFetch.onError(error.getMessage());
+//                    }
+//                });
 
 
     }

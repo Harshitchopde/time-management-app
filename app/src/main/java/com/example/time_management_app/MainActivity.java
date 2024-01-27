@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity implements onDataFetch {
         FastAndroidNetworking fastAndroidNetworking = new FastAndroidNetworking();
 
 //        fastAndroidNetworking.getFetchData(getApplicationContext(),this);
-         fastAndroidNetworking.getFetchData(this); // working fine
-         fastAndroidNetworking.postFetchData(this); // working fine
+//         fastAndroidNetworking.getFetchData(this); // working fine
+//         fastAndroidNetworking.postFetchData(this); // working fine
          fastAndroidNetworking.putFetchData(this); //
-         fastAndroidNetworking.deleteFetchData(this);
+//         fastAndroidNetworking.deleteFetchData(this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu);
 
     setBottomNavigationView();
