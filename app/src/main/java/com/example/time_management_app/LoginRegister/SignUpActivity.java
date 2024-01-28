@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp() {
         sign_up.setOnClickListener(view -> {
-            progressBar.setVisibility(View.VISIBLE);
+
             final  String User_name = use_name.getText().toString().trim();
             final  String User_email = use_email.getText().toString().trim();
             final  String User_cmpswd = use_cmpassword.getText().toString().trim();
@@ -101,6 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
             Toast.makeText(this, "Register processing", Toast.LENGTH_SHORT).show();
             // create user api call
+            progressBar.setVisibility(View.VISIBLE);
             createUserWith(User_name,User_email,User_pswd,User_cmpswd);
         });
     }
@@ -117,9 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
         }
         try {
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                    .connectTimeout(300, java.util.concurrent.TimeUnit.SECONDS) // Set the connection timeout
-                    .readTimeout(300, java.util.concurrent.TimeUnit.SECONDS)    // Set the read timeout
-                    .writeTimeout(300, java.util.concurrent.TimeUnit.SECONDS)   // Set the write timeout
+                    .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS) // Set the connection timeout
+                    .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)    // Set the read timeout
+                    .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)   // Set the write timeout
                     .build();
             AndroidNetworking.post(Utils.BASE_URL+"auth/signUp")
                     .addJSONObjectBody(jsonObject)
@@ -132,6 +133,7 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(SignUpActivity.this, "SuccessFully Register", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         }
@@ -139,9 +141,10 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onError(ANError anError) {
                             Log.e(TAG, "onError: Error hogya bhai : "+anError.toString() );
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
-                progressBar.setVisibility(View.INVISIBLE);
+
 
         }catch (Exception exception){
             Log.e(TAG, "createUserWith: "+exception.toString() );

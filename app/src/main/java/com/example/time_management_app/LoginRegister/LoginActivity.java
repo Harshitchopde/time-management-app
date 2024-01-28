@@ -51,7 +51,7 @@ ActivityLoginBinding binding;
 
        initvariable();
         sign_in.setOnClickListener(view -> {
-            progressBar.setVisibility(View.VISIBLE);
+
             final  String User_email = use_email_enter.getText().toString().trim();
             final  String User_pswd = use_password_enter.getText().toString().trim();
 
@@ -70,6 +70,7 @@ ActivityLoginBinding binding;
                 return;
             }
             // login to your account
+            progressBar.setVisibility(View.VISIBLE);
             loginToAccount(User_email,User_pswd);
         });
 
@@ -110,16 +111,18 @@ ActivityLoginBinding binding;
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(LoginActivity.this, "Login SuccessFully ", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
 
                         @Override
                         public void onError(ANError anError) {
+                            progressBar.setVisibility(View.INVISIBLE);
                             Log.e(TAG, "onError: Error 2 hogya bhai : "+anError.toString() );
                         }
                     });
-            progressBar.setVisibility(View.INVISIBLE);
+
 
 
 
