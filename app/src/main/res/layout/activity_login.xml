@@ -94,22 +94,24 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp">
 
             <ProgressBar
                 android:id="@+id/signInProgressBar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible" />
+               android:layout_centerInParent="true"
+                android:visibility="visible" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:backgroundTint="@color/black"
                 android:fontFamily="@font/ubuntu_medium"
                 android:paddingStart="20dp"
@@ -119,7 +121,9 @@
                 android:text="Sign In"
                 app:cornerRadius="10dp" />
 
-        </FrameLayout>
+
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

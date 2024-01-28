@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.androidnetworking.AndroidNetworking;
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
 import com.example.time_management_app.Fragments.HomeFragment;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // initialize the AndroidNetworking
+        AndroidNetworking.initialize(getApplicationContext());
         frameLayout = findViewById(R.id.frame_laout);
         FragLoad.loadFrag(new HomeFragment(),frameLayout,fragmentManager,1);
         // this is for testing purpose

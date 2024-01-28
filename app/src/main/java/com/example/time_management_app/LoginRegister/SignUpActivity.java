@@ -1,9 +1,12 @@
 package com.example.time_management_app.LoginRegister;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -12,9 +15,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.time_management_app.MainActivity;
+import com.example.time_management_app.Utils.Utils;
 import com.example.time_management_app.databinding.ActivitySignUpBinding;
 
 import com.google.android.material.button.MaterialButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import okhttp3.OkHttpClient;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -83,8 +100,53 @@ public class SignUpActivity extends AppCompatActivity {
                 return;
             }
             Toast.makeText(this, "Register processing", Toast.LENGTH_SHORT).show();
-
+            // create user api call
+            createUserWith(User_name,User_email,User_pswd,User_cmpswd);
         });
+    }
+
+    private void createUserWith(String user_name, String user_email, String user_pswd, String user_cmpswd) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("firstName",user_name);
+            jsonObject.put("email",user_email);
+            jsonObject.put("password",user_pswd);
+            jsonObject.put("confromPassword",user_cmpswd);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                    .connectTimeout(300, java.util.concurrent.TimeUnit.SECONDS) // Set the connection timeout
+                    .readTimeout(300, java.util.concurrent.TimeUnit.SECONDS)    // Set the read timeout
+                    .writeTimeout(300, java.util.concurrent.TimeUnit.SECONDS)   // Set the write timeout
+                    .build();
+            AndroidNetworking.post(Utils.BASE_URL+"auth/signUp")
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.HIGH)
+                    .setOkHttpClient(okHttpClient)
+//                    .setExecutor(Executors.newSingleThreadExecutor())
+
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
+                            Toast.makeText(SignUpActivity.this, "SuccessFully Register", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, "onError: Error hogya bhai : "+anError.toString() );
+                        }
+                    });
+                progressBar.setVisibility(View.INVISIBLE);
+
+        }catch (Exception exception){
+            Log.e(TAG, "createUserWith: "+exception.toString() );
+        }
+
     }
 
     private
