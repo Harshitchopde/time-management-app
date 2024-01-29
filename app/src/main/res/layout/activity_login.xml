@@ -104,9 +104,8 @@
                 android:id="@+id/signInProgressBar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="visible" />
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"

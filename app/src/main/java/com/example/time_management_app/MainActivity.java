@@ -1,5 +1,7 @@
 package com.example.time_management_app;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,19 +9,26 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
 import com.example.time_management_app.Fragments.HomeFragment;
 import com.example.time_management_app.Fragments.SettingFragment;
 import com.example.time_management_app.Utils.FragLoad;
+import com.example.time_management_app.Utils.Utils;
 import com.example.time_management_app.random.VollyLibrary;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -31,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // initialize the AndroidNetworking
         AndroidNetworking.initialize(getApplicationContext());
+        createTodaysDetails();
         frameLayout = findViewById(R.id.frame_laout);
         FragLoad.loadFrag(new HomeFragment(),frameLayout,fragmentManager,1);
         // this is for testing purpose
@@ -39,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu);
 
     setBottomNavigationView();
+    }
+
+    private void createTodaysDetails() {
+        try{
+            AndroidNetworking.post(Utils.BASE_URL+"date/createDate")
+                    .setPriority(Priority.IMMEDIATE)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e(TAG, "onResponse: hogya bhai"+response.toString() );
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, "onError: error"+anError.toString() );
+                        }
+                    });
+        }catch (Exception e){
+            Log.e(TAG, "createTodaysDetails: error hogy bhai"+e.toString() );
+        }
     }
 
     private void setBottomNavigationView() {

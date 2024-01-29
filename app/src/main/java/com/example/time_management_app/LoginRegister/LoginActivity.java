@@ -18,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.OkHttpResponseListener;
 import com.example.time_management_app.MainActivity;
 import com.example.time_management_app.Utils.Utils;
 import com.example.time_management_app.databinding.ActivityLoginBinding;
@@ -28,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -71,6 +74,7 @@ ActivityLoginBinding binding;
             }
             // login to your account
             progressBar.setVisibility(View.VISIBLE);
+            sign_in.setVisibility(View.INVISIBLE);
             loginToAccount(User_email,User_pswd);
         });
 
@@ -107,11 +111,13 @@ ActivityLoginBinding binding;
                     .setPriority(Priority.HIGH)
                     .setOkHttpClient(okHttpClient)
                     .build()
+
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
                             progressBar.setVisibility(View.INVISIBLE);
+                            sign_in.setVisibility(View.VISIBLE);
                             Toast.makeText(LoginActivity.this, "Login SuccessFully ", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
@@ -119,15 +125,18 @@ ActivityLoginBinding binding;
                         @Override
                         public void onError(ANError anError) {
                             progressBar.setVisibility(View.INVISIBLE);
-                            Log.e(TAG, "onError: Error 2 hogya bhai : "+anError.toString() );
+                            sign_in.setVisibility(View.VISIBLE);
+                            Log.e(TAG, "onError: Error 2 hogya bhai : "+anError );
                         }
                     });
-
+//
 
 
 
         }catch (Exception e){
             Log.e(TAG, "loginToAccount: "+e.toString() );
+            progressBar.setVisibility(View.INVISIBLE);
+            sign_in.setVisibility(View.VISIBLE);
         }
     }
 

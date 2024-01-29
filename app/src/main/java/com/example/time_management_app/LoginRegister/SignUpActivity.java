@@ -101,12 +101,14 @@ public class SignUpActivity extends AppCompatActivity {
             }
             Toast.makeText(this, "Register processing", Toast.LENGTH_SHORT).show();
             // create user api call
-            progressBar.setVisibility(View.VISIBLE);
+
             createUserWith(User_name,User_email,User_pswd,User_cmpswd);
         });
     }
 
     private void createUserWith(String user_name, String user_email, String user_pswd, String user_cmpswd) {
+        progressBar.setVisibility(View.VISIBLE);
+        sign_up.setVisibility(View.INVISIBLE);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("firstName",user_name);
@@ -134,20 +136,24 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
                             progressBar.setVisibility(View.INVISIBLE);
+                            sign_up.setVisibility(View.VISIBLE);
                             Toast.makeText(SignUpActivity.this, "SuccessFully Register", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                         }
 
                         @Override
                         public void onError(ANError anError) {
                             Log.e(TAG, "onError: Error hogya bhai : "+anError.toString() );
                             progressBar.setVisibility(View.INVISIBLE);
+                            sign_up.setVisibility(View.VISIBLE);
                         }
                     });
 
 
         }catch (Exception exception){
             Log.e(TAG, "createUserWith: "+exception.toString() );
+            progressBar.setVisibility(View.INVISIBLE);
+            sign_up.setVisibility(View.VISIBLE);
         }
 
     }

@@ -22,11 +22,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.time_management_app.Fragments.SubFragments.ActualFragment;
 import com.example.time_management_app.Fragments.SubFragments.OtherFactorFragment;
 import com.example.time_management_app.Fragments.SubFragments.ScheduleFragment;
 import com.example.time_management_app.R;
 import com.example.time_management_app.Utils.FragLoad;
+import com.example.time_management_app.Utils.Utils;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,6 +60,8 @@ private  FragmentManager fragmentManager;
         dateTextView = view.findViewById(R.id.dateTextView);
         spinner= view.findViewById(R.id.daily_spinner);
         frameLayout = view.findViewById(R.id.sub_fragement_daily);
+        // for getDateDetails
+        getDateDetails();
 
          fragmentManager = getChildFragmentManager();
         FragLoad.loadFrag(new ScheduleFragment(),frameLayout,fragmentManager,1);
@@ -119,5 +128,25 @@ private  FragmentManager fragmentManager;
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    private void getDateDetails() {
+        try{
+            AndroidNetworking.post(Utils.BASE_URL+"date/getDateDetails")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e(TAG, "onResponse: hogya bhai"+response.toString() );
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, "onError: error"+anError.toString() );
+                        }
+                    });
+        }catch (Exception e){
+            Log.e(TAG, "createTodaysDetails: error hogy bhai"+e.toString() );
+        }
     }
 }

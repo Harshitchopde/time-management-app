@@ -141,7 +141,12 @@
             android:layout_marginTop="32dp">
 
 
-
+            <ProgressBar
+                android:id="@+id/signUpProgressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
@@ -150,16 +155,12 @@
                 android:fontFamily="@font/ubuntu_medium"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
+                android:visibility="visible"
                 android:paddingEnd="20dp"
                 android:paddingBottom="10dp"
                 android:text="Sign Up"
                 app:cornerRadius="10dp" />
-            <ProgressBar
-                android:id="@+id/signUpProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible" />
+
         </FrameLayout>
 
         <LinearLayout
