@@ -131,7 +131,7 @@ private  FragmentManager fragmentManager;
     }
     private void getDateDetails() {
         try{
-            AndroidNetworking.post(Utils.BASE_URL+"date/getDateDetails")
+            AndroidNetworking.get(Utils.BASE_URL+"date/getDateDetails")
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {

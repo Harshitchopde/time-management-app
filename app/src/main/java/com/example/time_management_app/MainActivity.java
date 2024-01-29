@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private void createTodaysDetails() {
         try{
             AndroidNetworking.post(Utils.BASE_URL+"date/createDate")
-                    .setPriority(Priority.IMMEDIATE)
+                    .setPriority(Priority.HIGH)
                     .build()
+
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
