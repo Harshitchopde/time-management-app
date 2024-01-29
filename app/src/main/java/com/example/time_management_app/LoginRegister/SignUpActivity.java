@@ -125,8 +125,6 @@ public class SignUpActivity extends AppCompatActivity {
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.HIGH)
                     .setOkHttpClient(okHttpClient)
-//                    .setExecutor(Executors.newSingleThreadExecutor())
-
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
