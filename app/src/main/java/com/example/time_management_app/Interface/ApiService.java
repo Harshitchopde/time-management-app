@@ -21,4 +21,9 @@ public interface ApiService {
 
     @POST("/api/auth/login")
     Call<ResponseBody> login(@Body Map<String, String> params);
+
+    // create date
+    @POST("/api/date/createDate")
+    Call<ResponseBody> createDate();
+
 }
