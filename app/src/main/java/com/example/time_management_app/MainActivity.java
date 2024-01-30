@@ -17,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
 import com.example.time_management_app.Fragments.HomeFragment;
@@ -56,18 +57,28 @@ public class MainActivity extends AppCompatActivity {
             AndroidNetworking.post(Utils.BASE_URL+"date/createDate")
                     .setPriority(Priority.HIGH)
                     .build()
-
-                    .getAsJSONObject(new JSONObjectRequestListener() {
+                    .getAsString(new StringRequestListener() {
                         @Override
-                        public void onResponse(JSONObject response) {
-                            Log.e(TAG, "onResponse: hogya bhai"+response.toString() );
+                        public void onResponse(String response) {
+                            Log.e(TAG, "onResponse: "+response.toString() );
                         }
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.e(TAG, "onError: error"+anError.toString() );
+                            Log.e(TAG, "onError: "+anError );
                         }
                     });
+//                    .getAsJSONObject(new JSONObjectRequestListener() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.e(TAG, "onResponse: hogya bhai"+response.toString() );
+//                        }
+//
+//                        @Override
+//                        public void onError(ANError anError) {
+//                            Log.e(TAG, "onError: error"+anError.toString() );
+//                        }
+//                    });
         }catch (Exception e){
             Log.e(TAG, "createTodaysDetails: error hogy bhai"+e.toString() );
         }

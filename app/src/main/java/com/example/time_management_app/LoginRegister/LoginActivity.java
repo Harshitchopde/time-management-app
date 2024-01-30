@@ -22,6 +22,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
 import com.example.time_management_app.MainActivity;
+import com.example.time_management_app.Utils.SharedPreference;
 import com.example.time_management_app.Utils.Utils;
 import com.example.time_management_app.databinding.ActivityLoginBinding;
 import com.google.android.material.button.MaterialButton;
@@ -29,6 +30,12 @@ import com.google.android.material.button.MaterialButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieManager;
+import java.util.List;
+
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
@@ -51,7 +58,7 @@ ActivityLoginBinding binding;
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        okkhttpInstance();
        initvariable();
         sign_in.setOnClickListener(view -> {
 
@@ -90,6 +97,23 @@ ActivityLoginBinding binding;
         });
     }
 
+    private void okkhttpInstance() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                // Add other configurations
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        return null;
+                    }
+                })
+                .build();
+    }
+
     private void loginToAccount(String user_email, String user_pswd) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -101,11 +125,11 @@ ActivityLoginBinding binding;
             throw new RuntimeException(e);
         }
         try {
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                    .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS) // Set the connection timeout
-                    .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)    // Set the read timeout
-                    .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)   // Set the write timeout
-                    .build();
+//            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+//                    .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS) // Set the connection timeout
+//                    .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)    // Set the read timeout
+//                    .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)   // Set the write timeout
+//                    .build();
             AndroidNetworking.post(Utils.BASE_URL+"auth/login")
                     .addJSONObjectBody(jsonObject)
                     .setPriority(Priority.HIGH)
@@ -118,8 +142,20 @@ ActivityLoginBinding binding;
                             Log.e(TAG, "onResponse: SuccessFully frtch"+response.toString() );
                             progressBar.setVisibility(View.INVISIBLE);
                             sign_in.setVisibility(View.VISIBLE);
-                            Toast.makeText(LoginActivity.this, "Login SuccessFully ", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            String access_token = null;
+                            try {
+                                access_token = response.getString("token");
+                                SharedPreference.saveString(LoginActivity.this,"access_token",access_token);
+                                Toast.makeText(LoginActivity.this, "Login SuccessFully ", Toast.LENGTH_SHORT).show();
+                                String tokn = SharedPreference.getString(LoginActivity.this,"access_token","not get any token");
+                                Log.e(TAG, "onResponse: milgya token : "+tokn );
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            } catch (JSONException e) {
+                                Log.e(TAG, "onResponse: yr"+e.toString() );
+                                throw new RuntimeException(e);
+
+                            }
+
                         }
 
                         @Override
