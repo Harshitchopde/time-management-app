@@ -17,12 +17,8 @@
         <activity
             android:name="com.example.time_management_app.LoginRegister.LoginActivity"
             android:theme="@style/Theme.Funjo.noActionbar"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.time_management_app.LoginRegister.SignUpActivity"
@@ -33,8 +29,12 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
