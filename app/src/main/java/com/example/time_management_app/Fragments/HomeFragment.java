@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         // write your Home code
+
         return view;
     }
 }

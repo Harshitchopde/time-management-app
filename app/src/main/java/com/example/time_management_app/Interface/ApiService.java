@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -25,5 +26,11 @@ public interface ApiService {
     // create date
     @POST("/api/date/createDate")
     Call<ResponseBody> createDate();
+
+    // get todays date
+    @GET("/api/date/")
+    Call<ResponseBody> getTodayDate();
+
+//    /api/schedule/
 
 }

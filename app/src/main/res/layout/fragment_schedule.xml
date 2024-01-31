@@ -3,15 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B40505"
-    tools:context=".Fragments.SubFragments.ScheduleFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is Schedule"
-        android:textColor="@color/black"
-        android:layout_gravity="center"
-        android:textSize="20dp"/>
+    tools:context=".Fragments.SubFragments.ScheduleFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/create_schedule"
+
+
+android:backgroundTint="#1E1515"
+    android:text="Add Schedule +"
+    android:textColor="@color/white"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
+        android:id="@+id/recycleview_schedule"/>
+
+</LinearLayout>
 </FrameLayout>
