@@ -25,13 +25,22 @@ import android.widget.Toast;
 import com.example.time_management_app.Fragments.SubFragments.ActualFragment;
 import com.example.time_management_app.Fragments.SubFragments.OtherFactorFragment;
 import com.example.time_management_app.Fragments.SubFragments.ScheduleFragment;
+import com.example.time_management_app.Interface.ApiService;
 import com.example.time_management_app.R;
 import com.example.time_management_app.Utils.FragLoad;
+import com.example.time_management_app.Utils.RetrofitClient;
+import com.example.time_management_app.Utils.Utils;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DailyFragment extends Fragment implements AdapterView.OnItemSelectedListener{
@@ -53,6 +62,7 @@ private  FragmentManager fragmentManager;
         dateTextView = view.findViewById(R.id.dateTextView);
         spinner= view.findViewById(R.id.daily_spinner);
         frameLayout = view.findViewById(R.id.sub_fragement_daily);
+        getCurrentDateDetail();
 
          fragmentManager = getChildFragmentManager();
         FragLoad.loadFrag(new ScheduleFragment(),frameLayout,fragmentManager,1);
@@ -68,6 +78,36 @@ private  FragmentManager fragmentManager;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         return view;
+    }
+
+    private void getCurrentDateDetail() {
+        ApiService apiService = RetrofitClient.getApiService();
+        String date = Utils.getTodayDate();
+        Call<ResponseBody> call = apiService.getDateDetails(date);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.e(TAG, "onResponse: maza aaya "+response.body() );
+                    try {
+                        Log.e(TAG, "onResponse: "+response.body().string() );
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }else {
+                    try {
+                        Log.e(TAG, "onResponse: response mai errror"+response.errorBody().string() );
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure: fail hogya"+t.toString() );
+            }
+        });
     }
 
     public void showDatePickerDialog() {
