@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.time_management_app.Fragments.AnalysisFragment;
 import com.example.time_management_app.Fragments.DailyFragment;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         String responseBody = response.body().string();
                         Log.e(TAG, "onResponse: "+responseBody );
+                        Toast.makeText(MainActivity.this, "Created SuccessFull", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
