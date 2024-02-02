@@ -52,7 +52,7 @@ ActivityLoginBinding binding;
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        isAuthenticated();
        initvariable();
         sign_in.setOnClickListener(view -> {
             progressBar.setVisibility(View.VISIBLE);
@@ -85,6 +85,31 @@ ActivityLoginBinding binding;
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    private void isAuthenticated() {
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<ResponseBody> call = apiService.isAuthenticated();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.e(TAG, "onResponse: Successfull "+response.toString() );
+                    Log.e(TAG, "onResponse: "+response.body() );
+                }else{
+                    try {
+                        Log.e(TAG, "onResponse: "+response.errorBody().string() );
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure: galti kar rha hai "+t.toString() );
             }
         });
     }

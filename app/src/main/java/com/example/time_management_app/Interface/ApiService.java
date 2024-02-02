@@ -18,7 +18,9 @@ public interface ApiService {
 
     @POST("/api/auth/login")
     Call<ResponseBody> login(@Body Map<String, String> params);
-
+    // GET is isAuthenticated
+    @GET("/api/auth/isAuthenticated")
+    Call<ResponseBody> isAuthenticated();
     // create date
     // error i pass string in body but i have to pass map in it
     @POST("/api/date/createDate")
