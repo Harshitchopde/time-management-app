@@ -3,10 +3,8 @@ package com.example.time_management_app.Fragments;
 import static android.service.controls.ControlsProviderService.TAG;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -25,13 +23,28 @@ import android.widget.Toast;
 import com.example.time_management_app.Fragments.SubFragments.ActualFragment;
 import com.example.time_management_app.Fragments.SubFragments.OtherFactorFragment;
 import com.example.time_management_app.Fragments.SubFragments.ScheduleFragment;
+import com.example.time_management_app.Interface.ApiService;
+import com.example.time_management_app.Models.Schedule;
 import com.example.time_management_app.R;
+import com.example.time_management_app.Utils.DataUtils;
 import com.example.time_management_app.Utils.FragLoad;
+import com.example.time_management_app.Utils.RetrofitClient;
+import com.example.time_management_app.Utils.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DailyFragment extends Fragment implements AdapterView.OnItemSelectedListener{
@@ -53,6 +66,7 @@ private  FragmentManager fragmentManager;
         dateTextView = view.findViewById(R.id.dateTextView);
         spinner= view.findViewById(R.id.daily_spinner);
         frameLayout = view.findViewById(R.id.sub_fragement_daily);
+//        getCurrentDateDetail();
 
          fragmentManager = getChildFragmentManager();
         FragLoad.loadFrag(new ScheduleFragment(),frameLayout,fragmentManager,1);
@@ -68,6 +82,61 @@ private  FragmentManager fragmentManager;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         return view;
+    }
+
+    private void getCurrentDateDetail() {
+        ApiService apiService = RetrofitClient.getApiService(getActivity());
+        String date = Utils.getTodayDate();
+        Call<ResponseBody> call = apiService.getDateDetails(date);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+//                    Log.e(TAG, "onResponse: maza aaya "+response.body() );
+                    try {
+                        ResponseBody responseBody = response.body();
+//                        Log.e(TAG, "onResponse:11 "+response.body().string() );
+
+//                        if(responseBody!=null){
+//                            String respo = responseBody.string();
+//                            Log.e(TAG, "onResponse: khale"+respo );
+//                            JSONObject jsonObjectResponse = new JSONObject(respo);
+//                            JSONObject jsonObjectDate = jsonObjectResponse.getJSONObject("date");
+//                            JSONArray scheduleArray = jsonObjectDate.getJSONArray("Schedule");
+//
+//                            ArrayList<Schedule> scheduleArrayList =DataUtils.getScheduleArrayList();
+//                            for(int i =0;i<scheduleArray.length();i++){
+//                                JSONObject scheduleObj = scheduleArray.getJSONObject(i);
+//                                String startTime = scheduleObj.getString("startTime");
+//                                String endTime = scheduleObj.getString("endTime");
+//                                String taskName = scheduleObj.getString("taskName");
+//                                Schedule schedule = new Schedule(startTime,endTime,taskName);
+//                                scheduleArrayList.add(schedule);
+//                                Log.e(TAG, "onResponse: dd"+scheduleObj.toString() );
+//                            }
+//                            return;
+//
+//                        }
+
+
+//                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }else {
+                    try {
+                        Log.e(TAG, "onResponse: response mai errror"+response.errorBody().string() );
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure: fail hogya"+t.toString() );
+            }
+        });
     }
 
     public void showDatePickerDialog() {

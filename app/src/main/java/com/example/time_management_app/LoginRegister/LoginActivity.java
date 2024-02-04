@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.time_management_app.Interface.ApiService;
 import com.example.time_management_app.MainActivity;
 import com.example.time_management_app.Utils.RetrofitClient;
+import com.example.time_management_app.Utils.TokenManage;
 import com.example.time_management_app.databinding.ActivityLoginBinding;
 import com.google.android.material.button.MaterialButton;
 
@@ -52,7 +53,7 @@ ActivityLoginBinding binding;
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        isAuthenticated();
        initvariable();
         sign_in.setOnClickListener(view -> {
             progressBar.setVisibility(View.VISIBLE);
@@ -89,6 +90,32 @@ ActivityLoginBinding binding;
         });
     }
 
+    private void isAuthenticated() {
+        ApiService apiService = RetrofitClient.getApiService(this);
+        Call<ResponseBody> call = apiService.isAuthenticated();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.e(TAG, "onResponse: Successfull "+response.toString() );
+                    Log.e(TAG, "onResponse: "+response.body() );
+                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                }else{
+                    try {
+                        Log.e(TAG, "onResponse: "+response.errorBody().string() );
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: "+e.toString() );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure: galti kar rha hai "+t.toString() );
+            }
+        });
+    }
+
     private void loginToAccount(String user_email, String use_pasword) {
         Map<String, String> params = new HashMap<>();
 
@@ -99,7 +126,7 @@ ActivityLoginBinding binding;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this);
 
         Call<ResponseBody> call = apiService.login(params);
         call.enqueue(new Callback<ResponseBody>() {
@@ -109,8 +136,11 @@ ActivityLoginBinding binding;
                     // Handle success
                     try {
                         String jsonResponse = response.body().string();
-//                        JSONObject jsonObject = new JSONObject(jsonResponse);
-                        Log.e(TAG, "onResponse: maze aagye "+jsonResponse.toString() );
+                        JSONObject jsonObject = new JSONObject(jsonResponse);
+                        String token = jsonObject.getString("token");
+                        Log.e(TAG, "onResponse: Token ye hai kya : "+token );
+                        TokenManage.saveToken(getApplicationContext(),token);
+//                        Log.e(TAG, "onResponse: maze aagye "+jsonResponse.toString() );
 
                     } catch (Exception e) {
                         Log.e(TAG, "onResponse: error hogya 22"+e.toString() );

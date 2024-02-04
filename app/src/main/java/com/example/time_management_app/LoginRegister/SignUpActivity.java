@@ -114,7 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this);
 
         Call<ResponseBody> call = apiService.signUp(params);
         call.enqueue(new Callback<ResponseBody>() {

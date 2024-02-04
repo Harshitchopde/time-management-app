@@ -21,12 +21,17 @@ import com.example.time_management_app.Fragments.SettingFragment;
 import com.example.time_management_app.Interface.ApiService;
 import com.example.time_management_app.Utils.FragLoad;
 import com.example.time_management_app.Utils.RetrofitClient;
+import com.example.time_management_app.Utils.Utils;
 import com.example.time_management_app.random.VollyLibrary;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -53,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createTodayDate() {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseBody> call = apiService.createDate();
+        ApiService apiService = RetrofitClient.getApiService(this);
+        String todaysDate = Utils.getTodayDate();
+        Map<String,String> mp= new HashMap<>();
+        mp.put("date",todaysDate);
+        Call<ResponseBody> call = apiService.createDate(mp);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -78,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.e(TAG, "onFailure: fgg"+t.toString() );
             }
         });
     }
