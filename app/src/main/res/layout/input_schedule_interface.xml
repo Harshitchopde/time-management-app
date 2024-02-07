@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:minWidth="500dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
@@ -20,9 +21,11 @@
 
     <TextView
         android:id="@+id/startTime"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:text="Start-time"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/endTime"
@@ -32,14 +35,18 @@
 
     <TextView
         android:id="@+id/endTime"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="88dp"
+        android:layout_marginTop="60dp"
         android:text="End-time"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputLayout

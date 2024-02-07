@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">time-management-app</string>
+    <string name="app_name">Time-management-app</string>
     <string name="full_name">full name</string>
     <string name="home">Home</string>
     <string name="save">saved</string>
@@ -12,4 +12,7 @@
     <string name="setting">Setting</string>
     <string name="daily">Daily</string>
     <string name="task_demo">dshfas;dkfa fafasdlkfajd fadkfa;ldskfasd fasdhf asdfhas dfhasdfk asfsk dfjsdfksd</string>
+    <string name="set_start_time">Set Start-Time</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 </resources>

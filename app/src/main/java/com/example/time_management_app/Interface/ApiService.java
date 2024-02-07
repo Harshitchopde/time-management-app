@@ -1,5 +1,6 @@
 package com.example.time_management_app.Interface;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -41,5 +42,8 @@ public interface ApiService {
 //    /api/schedule/
     @GET("/api/schedule/find")
     Call<ResponseBody> getSchedules(@Query("date") String date);
+
+    @POST("/api/schedule/createSchedule")
+    Call<ResponseBody> createSchedule(@Body Map<String,String> params);
 
 }

@@ -26,4 +26,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+<!--    <style name="TimePickerStyle" parent="Widget.MaterialTimePicker">-->
+<!--        <item name="android:textAppearance">@style/TextAppearance.TimePicker</item>-->
+<!--        <item name="android:background">?attr/pickerBackgroundColor</item>-->
+<!--        <item name="highlighterColor">?attr/colorPrimary</item>-->
+<!--        <item name="highlighterHeight">60dp</item>-->
+<!--        <item name="isShowHighlighter">true</item>-->
+<!--        <item name="timeConvention">HOURS_12</item>-->
+<!--        <item name="fadeInAlpha">.3</item>-->
+<!--        <item name="fadeOutAlpha">.7</item>-->
+<!--        <item name="fadeInDuration">300</item>-->
+<!--        <item name="fadeOutDuration">1000</item>-->
+<!--        <item name="defaultHour">10</item>-->
+<!--        <item name="defaultMinute">30</item>-->
+<!--    </style>-->
 </resources>
