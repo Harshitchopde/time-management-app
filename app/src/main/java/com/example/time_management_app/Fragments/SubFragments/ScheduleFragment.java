@@ -56,9 +56,11 @@ Button create_schedule;
     TextView startTime, endTime;
     Calendar startCalTime = Calendar.getInstance();
 Calendar endCalTime = Calendar.getInstance();
+String currentDate;
 
 ScheduleAdapter scheduleAdapter;
-    public ScheduleFragment() {
+    public ScheduleFragment(String currentDate) {
+        this.currentDate = currentDate;
         // Required empty public constructor
     }
 
@@ -74,7 +76,7 @@ ScheduleAdapter scheduleAdapter;
 //        Log.e(TAG, "onCreateView: "+scheduleArrayList.toString() );
         create_schedule  = view.findViewById(R.id.create_schedule);
         recyclerView = view.findViewById(R.id.recycleview_schedule);
-        getScheduleData();
+        getScheduleData(currentDate);
         scheduleAdapter = new ScheduleAdapter(getParentFragment().getActivity(),scheduleArrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getParentFragment().getActivity()));
         recyclerView.setAdapter(scheduleAdapter);
@@ -159,7 +161,7 @@ openDialogBox();
                 if(response.isSuccessful()){
                     try {
                         Log.e(TAG, "onResponse: created shcdsdf "+response.body().string() );
-                        getScheduleData();
+                        getScheduleData(date);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -191,7 +193,8 @@ openDialogBox();
                 .setTimeConvention(MaterialTimePickerView.TimeConvention.HOURS_12) // default 12 hours
                 .setHour(hour) // default current hour
                 .setMinute(minute) // default current minute
-                .setTimePeriod(MaterialTimePickerView.TimePeriod.AM) // default based on the current time
+
+//                .setTimePeriod(MaterialTimePickerView.TimePeriod.AM) // default based on the current time
                 .setFadeAnimation(350L, 1050L, .3f, .7f)
                 .setTheme(com.swnishan.materialdatetimepicker.R.style.ThemeOverlay_Dialog_MaterialTimePicker) // default [R.style.ThemeOverlay_Dialog_MaterialTimePicker]
                 .build();
@@ -221,10 +224,10 @@ openDialogBox();
 
 
 
-    private void getScheduleData() {
+    private void getScheduleData(String currentDate) {
         ApiService apiService = RetrofitClient.getApiService(getActivity());
-        String date = Utils.getTodayDate();
-        Call<ResponseBody> call = apiService.getSchedules(date);
+//        String date = Utils.getTodayDate();
+        Call<ResponseBody> call = apiService.getSchedules(currentDate);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

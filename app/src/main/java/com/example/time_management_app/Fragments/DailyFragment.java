@@ -51,6 +51,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     private TextView dateTextView;
     private Spinner spinner;
     private FrameLayout frameLayout;
+    String currentDate;
 private  FragmentManager fragmentManager;
     private Calendar selectedDate = Calendar.getInstance();
     public DailyFragment() {
@@ -67,13 +68,14 @@ private  FragmentManager fragmentManager;
         spinner= view.findViewById(R.id.daily_spinner);
         frameLayout = view.findViewById(R.id.sub_fragement_daily);
 //        getCurrentDateDetail();
-
+        updateDateTextView();
          fragmentManager = getChildFragmentManager();
-        FragLoad.loadFrag(new ScheduleFragment(),frameLayout,fragmentManager,1);
+
+        FragLoad.loadFrag(new ScheduleFragment(currentDate),frameLayout,fragmentManager,1);
 
 
         spinner.setOnItemSelectedListener(this);
-        updateDateTextView();
+
         dateTextView.setOnClickListener(view1 -> {
             showDatePickerDialog();
         });
@@ -155,6 +157,8 @@ private  FragmentManager fragmentManager;
 
     private void updateDateTextView() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        currentDate = yyyyMMdd.format(selectedDate.getTime());
         String formattedDate = sdf.format(selectedDate.getTime());
         dateTextView.setText(formattedDate);
     }
@@ -172,7 +176,7 @@ private  FragmentManager fragmentManager;
 
         if(i==0){
             // 0 Schedule
-            FragLoad.loadFrag(new ScheduleFragment(),frameLayout,fragmentManager,0);
+            FragLoad.loadFrag(new ScheduleFragment(currentDate),frameLayout,fragmentManager,0);
         }else if(i==1){
             // 1 Actual
             FragLoad.loadFrag(new ActualFragment(),frameLayout,fragmentManager,0);
